@@ -122,3 +122,10 @@ class TUI:
             get_app().exit()
         elif inp == ".tables":
             self.show_tables()
+            return True
+        elif inp == ".save":
+            new_db = sqlite3.connect(f"{self.db.filename}.db")
+            self.db.con.backup(new_db)
+            new_db.close()
+            self.statusbar_text_right = f"Saved to {self.db.filename}.db"
+            return True
