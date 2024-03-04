@@ -105,6 +105,14 @@ class TUI:
         self.textarea.text = table.get_string()
         self.statusbar_text_right = f"Returned {len(table.rows)} row(s) in {self._exec_time_format(time.time() - _start_execute_time)}"
 
+    def show_tables(self):
+        _start_execute_time = time.time()
+        self.db.cur.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        table = from_db_cursor(self.db.cur)
+        self.textarea.text = table.get_string()
+        self.statusbar_text_right = f"Returned {len(table.rows)} row(s) in {self._exec_time_format(time.time() - _start_execute_time)}"
+
+
 
     @kb.add("c-c")
     def _(event):
