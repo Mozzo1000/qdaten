@@ -8,6 +8,12 @@ import humanize
 import datetime as dt
 from tui import TUI
 
+class SqliteDB:
+    def __init__(self, file):
+        self.filename = file
+        self.con = sqlite3.connect(file)
+        self.cur = self.con.cursor()
+
 def main():
     parser = argparse.ArgumentParser(description="CSV to SQL Explorer")
     parser.add_argument("file", type=str, help="CSV file")
@@ -15,10 +21,14 @@ def main():
     parser.add_argument("--header", action="store_true", default=True, help="Use if CSV file does not have a header row")
     parser.add_argument("-c", type=str, default="", help="Run SQL query directly against CSV without any TUI")
     parser.add_argument("--no-default-query", action="store_true", default=False, help="Do not run SELECT from table query when starting in interactive mode")
+    parser.add_argument("--file-type", type=str, default="csv", choices=["csv", "sqlite"], help="File type to open")
     args = parser.parse_args()
 
     if args.file:
-        db = CSVDB(args.file, args.header, args.delimiter)
+        if args.file_type == "csv":
+            db = CSVDB(args.file, args.header, args.delimiter)
+        elif args.file_type == "sqlite":
+            db = SqliteDB(args.file)
 
         if args.c:
             try:
