@@ -1,0 +1,4 @@
+prettytable==3.10.0
+tqdm==4.66.2
+humanize==4.9.0
+prompt-toolkit==3.0.43
